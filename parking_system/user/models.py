@@ -13,7 +13,7 @@ class Account(models.Model):
     """Model definition for User."""
 
     Username = models.CharField(max_length=100,blank=False,null=False)
-    role = models.CharField(max_length=10,choices=roles,blank=False,default="driver")
+    role = models.CharField(max_length=10,choices=roles,blank=False,default="driver",help_text='select your role')
     email = models.EmailField(unique=True,blank=False,default="email")
 
     class Meta:
