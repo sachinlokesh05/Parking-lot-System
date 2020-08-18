@@ -36,15 +36,20 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django_mongoengine',
+    'django.contrib.staticfiles'
 ]
 
 INSTALLED_APPLICATION = [
-    'user'
+    'user',
+    'parking'
 ]
 
-INSTALLED_APPS += INSTALLED_APPLICATION
+
+THIR_PARTY_APPLICATION = [
+    'django_mongoengine',
+]
+
+INSTALLED_APPS += INSTALLED_APPLICATION + THIR_PARTY_APPLICATION
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
