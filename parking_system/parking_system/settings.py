@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from mongoengine import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = 'e#fdjte&&)us3%ae4acex#0!6$-5v0!@m_%y)szw%e7gy9%4wq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['54.149.63.203', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -36,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles'
+    'django.contrib.staticfiles',
+
 ]
 
 INSTALLED_APPLICATION = [
@@ -47,6 +49,9 @@ INSTALLED_APPLICATION = [
 
 THIR_PARTY_APPLICATION = [
     'django_mongoengine',
+    'django_mongoengine.mongo_auth',
+    'django_mongoengine.mongo_admin',
+
 ]
 
 INSTALLED_APPS += INSTALLED_APPLICATION + THIR_PARTY_APPLICATION
@@ -79,26 +84,15 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'parking_system.wsgi.application'
+# WSGI_APPLICATION = 'parking_system.wsgi.application'
+
+# WSGI_APPLICATION = 'your_project_name.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME':'parking_lot_system',
-    }
-}
 
-#MONGODB_DATABASES
-MONGODB_DATABASES = {
-    'default': {
-        'ENGINE': '',
-        'NAME':'',
-    }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -137,3 +131,32 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+DATABASES = {
+    'default': {'ENGINE': 'django.db.backends.dummy'}
+}
+
+_MONGODB_USER = 'admin'
+_MONGODB_PASSWD = 'admin@1234'
+_MONGODB_HOST = 'localhost'
+_MONGODB_NAME = 'parking_system'
+_MONGODB_DATABASE_HOST = \
+ MONGODB_DATABASES = {
+    "default": {
+        "name": _MONGODB_NAME,
+        "host": _MONGODB_HOST,
+        "password": _MONGODB_PASSWD,
+        "username": _MONGODB_USER,
+        "tz_aware": True, # if you using timezones in django (USE_TZ = True)
+    },
+}
+
+SESSION_ENGINE = 'django_mongoengine.sessions'
+SESSION_SERIALIZER = 'django_mongoengine.sessions.BSONSerializer'
+AUTH_USER_MODEL = 'mongo_auth.MongoUser'
+
+AUTHENTICATION_BACKENDS = (
+    'django_mongoengine.mongo_auth.backends.MongoEngineBackend',
+)
+
+SESSION_ENGINE = 'django_mongoengine.sessions'
