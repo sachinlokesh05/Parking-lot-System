@@ -1,27 +1,19 @@
-from djongo import models
-from django.utils.translation import gettext_lazy as _
+from django_mongoengine import fields
+from django_mongoengine import Document, EmbeddedDocument
+from django_mongoengine.mongo_auth.models import User
 
-# from django.db import models
-# Create your models here.
-class Account(models.Model):
-    #role choices
-    roles = [
-        ("driver","driver"),
-         ("police","police"),
-          ("owner","owner"),
-    ]
-    """Model definition for User."""
+class User(User):
+    roles = (
+        ('driver','driver'),
+        ('police','police'),
+        ('owner','owner')
+    )
+    role = fields.StringField(
+        require = True,
+        default = 'driver',
+        choices = roles
+    )
 
-    Username = models.CharField(max_length=100,blank=False,null=False)
-    role = models.CharField(max_length=10,choices=roles,blank=False,default="driver",help_text='select your role')
-    email = models.EmailField(unique=True,blank=False,default="email")
-
-    class Meta:
-        """Meta definition for User."""
-
-        verbose_name = 'User'
-        verbose_name_plural = 'Users'
-
-    def __str__(self):
-        """Unicode representation of User."""
-        return self.Username
+    # meta ={
+    #         'allow_inheritance': True
+    # }
