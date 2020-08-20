@@ -48,10 +48,8 @@ INSTALLED_APPLICATION = [
 
 
 THIR_PARTY_APPLICATION = [
-    'django_mongoengine',
-    'django_mongoengine.mongo_auth',
-    'django_mongoengine.mongo_admin',
-
+    'djongo',
+    'rest_framework'
 ]
 
 INSTALLED_APPS += INSTALLED_APPLICATION + THIR_PARTY_APPLICATION
@@ -133,30 +131,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 DATABASES = {
-    'default': {'ENGINE': 'django.db.backends.dummy'}
+    'default': {'ENGINE': 'djongo',
+    'name':"parking"}
 }
-
-_MONGODB_USER = 'admin'
-_MONGODB_PASSWD = 'admin@1234'
-_MONGODB_HOST = 'localhost'
-_MONGODB_NAME = 'parking_system'
-_MONGODB_DATABASE_HOST = \
- MONGODB_DATABASES = {
-    "default": {
-        "name": _MONGODB_NAME,
-        "host": _MONGODB_HOST,
-        "password": _MONGODB_PASSWD,
-        "username": _MONGODB_USER,
-        "tz_aware": True, # if you using timezones in django (USE_TZ = True)
-    },
-}
-
-SESSION_ENGINE = 'django_mongoengine.sessions'
-SESSION_SERIALIZER = 'django_mongoengine.sessions.BSONSerializer'
-AUTH_USER_MODEL = 'mongo_auth.MongoUser'
-
-AUTHENTICATION_BACKENDS = (
-    'django_mongoengine.mongo_auth.backends.MongoEngineBackend',
-)
-
-SESSION_ENGINE = 'django_mongoengine.sessions'

@@ -1,22 +1,48 @@
 from djongo import models
+from django.contrib.auth.models import User
+import mongoengine
+class Log(models.Model):
+    """Model definition for Log."""
 
-# Create your models here.
+    entry_time = models.DateTimeField(verbose_name="Entry time",editable=False,default="")
+    exit_time = models.DateTimeField(verbose_name="Exit time",editable=False,default="")
+
+    class Meta:
+        """Meta definition for Log."""
+
+        verbose_name = 'Log'
+        verbose_name_plural = 'Logs'
+        abstract = True
+
+    def __str__(self):
+        """Unicode representation of Log."""
+        return str(self.entry_time)+" to "+str(self.exit_time)
+
+
+ 
 class Parking(models.Model):
     """Model definition for Parking."""
-    # vehicle_type 
-    vehicles = [
-        
-        ('2-wheelers','2-wheelers'),
-        ('4-wheelers','4-wheelers'),
-        ('bicycle','bicycle'),
+    _id = models.ObjectIdField()
+    user_details = models.ForeignKey(User,on_delete=models.CASCADE)
+    vehicle_number = models.CharField(max_length=20,blank = False)
 
-    ]
-    
-    vehicel_number = models.CharField(max_length=10,unique=True,editable=False)
-    vehicle_type = models.CharField(max_length=10,choices=vehicles,help_text='select your vehicle type')
-    entry_time = models.DateTimeField(editable=False)
-    end_time = models.DateTimeField(editable=False)
+    vehicles = (
+        ('Bike','Bike'),
+        ('Car','Car'),
+        ('Bicycle','Bicycle')
+    )
 
+    vehicle_type = models.CharField(
+        max_length=20,
+        blank = False,
+        default = 'Car',
+        choices = vehicles,
+        # validation = vehicle_type_validate
+    )
+    logs =  models.EmbeddedField(model_container=Log,null=True)
+    slot = models.PositiveIntegerField(blank=False)
+
+    objects = models.DjongoManager()
 
     class Meta:
         """Meta definition for Parking."""
@@ -26,4 +52,15 @@ class Parking(models.Model):
 
     def __str__(self):
         """Unicode representation of Parking."""
-        pass
+        return str(self.vehicle_number)
+
+    def __unicode__(self):
+        return str(self.vehicle_number)
+
+    meta ={
+        'ordering': ['-created_at'],
+
+    }
+
+    # validation for cehicle type selection
+   

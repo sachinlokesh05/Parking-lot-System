@@ -1,6 +1,7 @@
 from django_mongoengine import mongo_admin as admin
-from .models import User
+# from .models import MyUser
 
-@admin.register(User)
-class BlogPostAdmin(admin.DocumentAdmin):
-    pass
+# class UserAdmin(admin.DocumentAdmin):
+#     module=MyUser
+
+# admin.site.register(MyUser)
