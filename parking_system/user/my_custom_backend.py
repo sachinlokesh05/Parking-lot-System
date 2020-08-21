@@ -1,13 +1,23 @@
-from django.conf import settings
-from django.contrib.auth.models import check_password
-#from mongoengine.django.auth import check_password
-#from django.contrib.auth.hashers import check_password
-from .models import MyUser
+from django.contrib.auth.models import User
+from django.contrib.auth.backends import BaseBackend
 
-class EmailAuthBackend(object):
 
-    def authenticate(self, email=None, password=None):
-        pass
-# ...uh oh, since I'm NOT using one of the usual backends with a pre-existing authenticate()
-# method, there ain't a native check_password() function available. Means I have to hash the
-# password, etc
+class EmailOrUsernameModelBackend(BaseBackend):
+
+    def authenticate(self, request,username=None, password=None):
+        if '@' in username:
+            kwargs = {'email': username}
+        else:
+             kwargs = {'username': username}
+        try:
+            user = User.objects.get(**kwargs)
+            if getattr(user, 'is_active', False) and user.check_password(password):
+                return user
+        except User.DoesNotExist:
+            return None
+
+    def get_user(self, user_id):
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return None
