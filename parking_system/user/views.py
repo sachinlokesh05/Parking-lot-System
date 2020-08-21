@@ -10,7 +10,8 @@ from rest_framework.exceptions import NotFound,AuthenticationFailed
 from .UseException import RoleNotExist
 from .forms import LoginForm
 from .my_custom_backend import EmailOrUsernameModelBackend
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
+from parking_system.user.UseException import LogOutFailed
 
 class Register(APIView):
     serializer_class = RegisterUserSerializer
@@ -46,3 +47,11 @@ def Login(request):
         login(request,user,backend='django.contrib.auth.backends.ModelBackend')
         return Response(data="User Login in Succefully",status=status.HTTP_200_OK)
     return Response(data=f"User Login is Failled",status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def Logout(request):
+    try:
+        logout(request)
+    except LogOutFailed:
+        return LogOutFailed
