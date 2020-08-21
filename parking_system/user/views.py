@@ -28,3 +28,21 @@ class Register(APIView):
         user.groups.add(group)    
         return Response(data="Succefully Registered",status=status.HTTP_201_CREATED)
 
+
+@api_view(['POST'])
+def Login(request):
+    try:
+        form = LoginForm(request.data)
+    except form.FieldDoesNotExist:
+        return FieldDoesNotExist()
+    if form.is_valid():
+        auth = EmailOrUsernameModelBackend()
+        username = form.cleaned_data['username_or_email']
+        password = form.cleaned_data['password']
+        try:
+            user = auth.authenticate(request,username=username,password=password)
+        except user.AuthenticationFailed:
+            return AuthenticationFailed(detail="User Authentication failed",code=404)
+        login(request,user,backend='django.contrib.auth.backends.ModelBackend')
+        return Response(data="User Login in Succefully",status=status.HTTP_200_OK)
+    return Response(data=f"User Login is Failled",status=status.HTTP_400_BAD_REQUEST)
