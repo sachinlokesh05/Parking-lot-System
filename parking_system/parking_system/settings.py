@@ -49,7 +49,7 @@ INSTALLED_APPLICATION = [
 
 THIR_PARTY_APPLICATION = [
     'djongo',
-    'rest_framework'
+    'rest_framework',
 ]
 
 INSTALLED_APPS += INSTALLED_APPLICATION + THIR_PARTY_APPLICATION
@@ -134,3 +134,9 @@ DATABASES = {
     'default': {'ENGINE': 'djongo',
     'name':"parking"}
 }
+
+AUTHENTICATION_BACKENDS = (
+    # Custom Backend for login
+    'user.my_custom_backend.EmailOrUsernameModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
