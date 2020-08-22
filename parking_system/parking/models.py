@@ -4,14 +4,9 @@ import mongoengine
 class Log(models.Model):
     """Model definition for Log."""
 
-    entry_time = models.DateTimeField(verbose_name="Entry time",editable=False,default="")
-    exit_time = models.DateTimeField(verbose_name="Exit time",editable=False,default="")
-
+    
     class Meta:
         """Meta definition for Log."""
-
-        verbose_name = 'Log'
-        verbose_name_plural = 'Logs'
         abstract = True
 
     def __str__(self):
@@ -22,10 +17,9 @@ class Log(models.Model):
  
 class Parking(models.Model):
     """Model definition for Parking."""
-    _id = models.ObjectIdField()
     user_details = models.ForeignKey(User,on_delete=models.CASCADE)
     vehicle_number = models.CharField(max_length=20,blank = False)
-
+    vehicle_color = models.CharField(max_length=100,blank = False)
     vehicles = (
         ('Bike','Bike'),
         ('Car','Car'),
@@ -39,7 +33,8 @@ class Parking(models.Model):
         choices = vehicles,
         # validation = vehicle_type_validate
     )
-    logs =  models.EmbeddedField(model_container=Log,null=True)
+    entry_time = models.DateTimeField()
+    exit_time = models.DateTimeField()
     slot = models.PositiveIntegerField(blank=False)
 
     objects = models.DjongoManager()
@@ -58,8 +53,6 @@ class Parking(models.Model):
         return str(self.vehicle_number)
 
     meta ={
-        'ordering': ['-created_at'],
-
     }
 
     # validation for cehicle type selection
