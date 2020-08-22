@@ -16,12 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from user.views import Register,Login,Logout
-from parking.views import CreateParkingView
+from parking.views import CreateParkingView,Unparking
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('rest_framework.urls')),
-    path('register/', Register.as_view()),
-    path('login', Login),
-    path('logout', Logout),
-    path('park', CreateParkingView.as_view())
+    path('admin/', admin.site.urls,name="admin"),
+    path('api/', include('rest_framework.urls'),name="api"),
+    path('register/', Register.as_view(),name="register"),
+    path('login', Login,name="login"),
+    path('logout', Logout,name="logout"),
+    path('park', CreateParkingView.as_view(),name="parking"),
+    path('unpark/', Unparking,name="unparking")
 ]
