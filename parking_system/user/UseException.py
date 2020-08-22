@@ -6,3 +6,8 @@ class RoleNotExist(APIException):
 
 class LogOutFailed(APIException):
     detail = "Failed to SignOut,Please Try again later"
+
+
+class SomeOneIsLoggedInAlready(APIException):
+    detail="Already Someone is logged in,Please Logout and Try Login"
+    code = 400

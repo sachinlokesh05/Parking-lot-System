@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.backends import BaseBackend
+from user.UseException import SomeOneIsLoggedInAlready
+from rest_framework.response import Response
 
 
 class EmailOrUsernameModelBackend(BaseBackend):
@@ -11,8 +13,9 @@ class EmailOrUsernameModelBackend(BaseBackend):
              kwargs = {'username': username}
         try:
             user = User.objects.get(**kwargs)
-            if getattr(user, 'is_active', False) and user.check_password(password):
-                return user
+            if getattr(user, 'is_active', False) and user.check_password(password) :
+                    return user
+            return None
         except User.DoesNotExist:
             return None
 

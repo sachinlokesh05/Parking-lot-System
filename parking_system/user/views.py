@@ -11,7 +11,8 @@ from .UseException import RoleNotExist
 from .forms import LoginForm
 from .my_custom_backend import EmailOrUsernameModelBackend
 from django.contrib.auth import login, logout
-from parking_system.user.UseException import LogOutFailed
+from user.UseException import LogOutFailed
+from user.UseException import SomeOneIsLoggedInAlready
 
 class Register(APIView):
     serializer_class = RegisterUserSerializer
@@ -32,6 +33,8 @@ class Register(APIView):
 
 @api_view(['POST'])
 def Login(request):
+    if request.user.is_authenticated:
+        return Response(data="User already logged in,Do logout and Try login",status=status.HTTP_405_METHOD_NOT_ALLOWED)
     try:
         form = LoginForm(request.data)
     except form.FieldDoesNotExist:
@@ -42,8 +45,8 @@ def Login(request):
         password = form.cleaned_data['password']
         try:
             user = auth.authenticate(request,username=username,password=password)
-        except user.AuthenticationFailed:
-            return AuthenticationFailed(detail="User Authentication failed",code=404)
+        except Exception as e:
+            raise AuthenticationFailed(detail="User Authentication failed",code=404)
         login(request,user,backend='django.contrib.auth.backends.ModelBackend')
         return Response(data="User Login in Succefully",status=status.HTTP_200_OK)
     return Response(data=f"User Login is Failled",status=status.HTTP_400_BAD_REQUEST)
