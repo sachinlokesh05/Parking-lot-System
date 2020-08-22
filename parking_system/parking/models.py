@@ -33,7 +33,7 @@ class Parking(models.Model):
         choices = vehicles,
         # validation = vehicle_type_validate
     )
-    entry_time = models.DateTimeField()
+    entry_time = models.DateTimeField(auto_now_add=True)
     exit_time = models.DateTimeField()
     slot = models.PositiveIntegerField(blank=False)
 

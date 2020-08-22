@@ -3,7 +3,10 @@ from .models import Parking,Log
 from mongoengine.errors import DoesNotExist
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
-
+from django.db.models import Count, F, Subquery, Value
+from .ParkingException import VehicleDoesNotExist
+from rest_framework.response import Response
+from rest_framework.exceptions import ValidationError
 class CreateParkingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Parking
@@ -55,3 +58,19 @@ class PolicemanParkingSerializer(serializers.ModelSerializer):
         # fields = "__all__"
 
         exclude = ['entry_time','exit_time']
+
+
+class UnparkingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Parking
+        fields= ['vehicle_number']
+
+    
+    def validate(self, attrs):
+        vehicle_number = attrs.get('vehicle_number')
+        try:
+            vehicle_details = Parking.objects.get(vehicle_number=vehicle_number)
+        except Exception:
+            raise VehicleDoesNotExist(detail="Vehicle is not present with the Vehicle Number",code=400)
+        vehicle_details.delete()
+        return super().validate(attrs)
