@@ -58,3 +58,4 @@ def Logout(request):
         logout(request)
     except LogOutFailed:
         return LogOutFailed
+    return Response(data="Logged Out Succefully,Thank YOU",status=status.HTTP_200_OK)
