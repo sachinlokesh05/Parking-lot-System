@@ -7,9 +7,11 @@ from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
 from .serializers import UnparkingSerializer
 from rest_framework import status
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
-class CreateParkingView(ListCreateAPIView):
+class CreateParkingView(LoginRequiredMixin,ListCreateAPIView):
+    login_url= "login"
     queryset = Parking.objects.all()
     serializer_class = CreateParkingSerializer
 
