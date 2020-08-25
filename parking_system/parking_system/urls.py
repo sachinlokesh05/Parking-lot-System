@@ -16,7 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from user.views import Register,Login,Logout
-from parking.views import CreateParkingView,Unparking
+from parking.views import CreateParkingView,Unparking,GetVehicle
+from rest_framework.routers import DefaultRouter
+
+# Create a router and register our viewsets with it.
+router = DefaultRouter()
+router.register(r'search',GetVehicle)
+
 urlpatterns = [
     path('admin/', admin.site.urls,name="admin"),
     path('api/', include('rest_framework.urls'),name="api"),
@@ -24,5 +30,7 @@ urlpatterns = [
     path('login', Login,name="login"),
     path('logout', Logout,name="logout"),
     path('park', CreateParkingView.as_view(),name="parking"),
-    path('unpark/', Unparking,name="unparking")
+    path('unpark/', Unparking,name="unparking"),
+    path('',include(router.urls))
 ]
+
