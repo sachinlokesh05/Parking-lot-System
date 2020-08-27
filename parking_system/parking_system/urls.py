@@ -26,4 +26,3 @@ urlpatterns = [
     path('park', CreateParkingView.as_view(),name="parking"),
     path('unpark/', Unparking,name="unparking"),
 ]
-
