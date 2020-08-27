@@ -24,5 +24,6 @@ urlpatterns = [
     path('login', Login,name="login"),
     path('logout', Logout,name="logout"),
     path('park', CreateParkingView.as_view(),name="parking"),
-    path('unpark/', Unparking,name="unparking")
+    path('unpark/', Unparking,name="unparking"),
 ]
+

@@ -7,6 +7,9 @@ from django.db.models import Count, F, Subquery, Value
 from .ParkingException import VehicleDoesNotExist
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
+from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
+
 class CreateParkingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Parking
@@ -22,7 +25,7 @@ class CreateParkingSerializer(serializers.ModelSerializer):
             new_slot = randint(0,400)
             try:
                 query_slot = Parking.objects.get(slot=new_slot)
-            except Exception:
+            except ObjectDoesNotExist:
                 query_slot = 0
         validated_data["slot"] = new_slot
 
@@ -32,7 +35,7 @@ class CreateParkingSerializer(serializers.ModelSerializer):
         user = self.validated_data['user_details']
         try:
             email_list = User.objects.get(username=user).email
-        except Exception:
+        except ObjectDoesNotExist:
             raise DoesNotExist("User email Not Exist")
         return super().save(**kwargs)
 
@@ -65,12 +68,20 @@ class UnparkingSerializer(serializers.ModelSerializer):
         model = Parking
         fields= ['vehicle_number']
 
-    
-    def validate(self, attrs):
-        vehicle_number = attrs.get('vehicle_number')
+    def validate(self,data):
+        vehicle_number = data.get('vehicle_number')
         try:
             vehicle_details = Parking.objects.get(vehicle_number=vehicle_number)
-        except Exception:
+        except ObjectDoesNotExist as e:
+            print(e)
             raise VehicleDoesNotExist(detail="Vehicle is not present with the Vehicle Number",code=400)
-        vehicle_details.delete()
-        return super().validate(attrs)
+        return super(UnparkingSerializer, self).validate(data)
+
+    def update(self, instance, validated_data):
+        validated_data['slot']=None
+        validated_data['exit_time']=timezone.now()
+        parking_obj = Parking.objects.filter(vehicle_number=validated_data['vehicle_number']).latest('id')
+        obj = super().update(instance, validated_data)
+        return obj
+    # def validators(self, validators):
+    #     return super().validators(validators)
