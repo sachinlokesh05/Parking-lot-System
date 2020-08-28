@@ -33,6 +33,11 @@ class Parking(models.Model):
         choices = vehicles,
         # validation = vehicle_type_validate
     )
+    parking = (
+        ("self","self"),
+        ("wallet","wallet")
+    )
+    parking_type = models.CharField(max_length=10,choices=parking)
     entry_time = models.DateTimeField(auto_now_add=True)
     exit_time = models.DateTimeField()
     slot = models.PositiveIntegerField(blank=False)
@@ -56,4 +61,37 @@ class Parking(models.Model):
     }
 
     # validation for cehicle type selection
-   
+class VehicalFees(models.Model):
+    vehicles = (
+        ("car","car"),
+        ("bike","bike"),
+        ("cycle","cycle")
+    )
+    vehicle_type = models.CharField(max_length=10,choices=vehicles)
+    cost = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.vehicle_type +"--"+str(self.cost)
+
+class DriverFees(models.Model):
+    drivers = (
+        ("owner","owner"),
+        ("policeman","policeman"),
+        ("driver","driver")
+    )
+    driver_type = models.CharField(max_length=10,choices=drivers)
+    cost = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.driver_type+"--"+str(self.cost)
+
+class ParkingFees(models.Model):
+    parking = (
+        ("self","self"),
+        ("wallet","wallet")
+        )
+    parking_type = models.CharField(max_length=10,choices=parking)
+    cost = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.parking_type+"--"+str(self.cost)
