@@ -1,0 +1,532 @@
+﻿MongoDB:
+Start MongoDB
+sudo service mongodb start
+Stop MongoDB
+sudo service mongodb stop
+Restart MongoDB
+sudo service mongodb restart
+
+To use MongoDB run the following command.
+mongo
+The following example shows the syntax of createCollection() method with few important options −
+> db.createCollection("mycol", { capped : true, autoIndexID : true, size : 6142800, max : 10000 } ){
+"ok" : 0,
+"errmsg" : "BSON field 'create.autoIndexID' is an unknown field.",
+"code" : 40415,
+"codeName" : "Location40415"
+}
+>
+
+drop the collection with the name mycollection.
+>db.mycollection.drop()
+true
+>
+
+The basic syntax of insert() command is as follows −
+db.users.insert({
+... _id : ObjectId("507f191e810c19729de860ea"),
+... title: "MongoDB Overview",
+... description: "MongoDB is no sql database",
+... by: "tutorials point",
+... url: "http://www.tutorialspoint.com",
+... tags: ['mongodb', 'database', 'NoSQL'],
+... likes: 100
+... })
+WriteResult({ "nInserted" : 1 })
+>
+
+The basic syntax of find() method is as follows −
+db.mycol.find()
+{ "_id" : ObjectId("5dd4e2cc0821d3b44607534c"), "title" : "MongoDB Overview", "description" : "MongoDB is no SQL database", "by" : "tutorials point", "url" : "http://www.tutorialspoint.com", "tags" : [ "mongodb", "database", "NoSQL" ], "likes" : 100 }
+{ "_id" : ObjectId("5dd4e2cc0821d3b44607534d"), "title" : "NoSQL Database", "description" : "NoSQL database doesn't have tables", "by" : "tutorials point", "url" : "http://www.tutorialspoint.com", "tags" : [ "mongodb", "database", "NoSQL" ], "likes" : 20, "comments" : [ { "user" : "user1", "message" : "My first comment", "dateCreated" : ISODate("2013-12-09T21:05:00Z"), "like" : 0 } ] }
+>
+
+The pretty() Method
+To display the results in a formatted way, you can use pretty() method
+>db.COLLECTION_NAME.find().pretty()
+> db.mycol.find().pretty()
+{
+        "_id" : ObjectId("5dd4e2cc0821d3b44607534c"),
+        "title" : "MongoDB Overview",
+        "description" : "MongoDB is no SQL database",
+
+        "by" : "tutorials point",
+        "url" : "http://www.tutorialspoint.com",
+        "tags" : [
+                "mongodb",
+                "database",
+                "NoSQL"
+        ],
+        "likes" : 100
+}
+{
+        "_id" : ObjectId("5dd4e2cc0821d3b44607534d"),
+        "title" : "NoSQL Database",
+        "description" : "NoSQL database doesn't have tables",
+        "by" : "tutorials point",
+        "url" : "http://www.tutorialspoint.com",
+        "tags" : [
+                "mongodb",
+                "database",
+                "NoSQL"
+        ],
+        "likes" : 20,
+        "comments" : [
+                {
+                        "user" : "user1",
+                        "message" : "My first comment",
+                        "dateCreated" : ISODate("2013-12-09T21:05:00Z"),
+                        "like" : 0
+                }
+        ]
+}
+
+
+AND in MongoDB
+Syntax
+>db.mycol.find({ $and: [ {<key1>:<value1>}, { <key2>:<value2>} ] })
+> db.mycol.find({$and:[{"by":"tutorials point"},{"title": "MongoDB Overview"}]}).pretty()
+{
+        "_id" : ObjectId("5dd4e2cc0821d3b44607534c"),
+        "title" : "MongoDB Overview",
+        "description" : "MongoDB is no SQL database",
+        "by" : "tutorials point",
+        "url" : "http://www.tutorialspoint.com",
+        "tags" : [
+                "mongodb",
+                "database",
+                "NoSQL"
+        ],
+        "likes" : 100
+}
+>
+
+OR in MongoDB
+Syntax
+>db.mycol.find(
+   {
+      $or: [
+         {key1: value1}, {key2:value2}
+      ]
+   }
+).pretty()
+
+
+Example
+>db.mycol.find({$or:[{"by":"tutorials point"},{"title": "MongoDB Overview"}]}).pretty()
+{
+   "_id": ObjectId(7df78ad8902c),
+   "title": "MongoDB Overview", 
+   "description": "MongoDB is no sql database",
+   "by": "tutorials point",
+   "url": "http://www.tutorialspoint.com",
+   "tags": ["mongodb", "database", "NoSQL"],
+   "likes": "100"
+}
+>
+Using AND and OR Together
+Example
+>db.mycol.find({"likes": {$gt:10}, $or: [{"by": "tutorials point"},
+   {"title": "MongoDB Overview"}]}).pretty()
+{
+   "_id": ObjectId(7df78ad8902c),
+   "title": "MongoDB Overview", 
+   "description": "MongoDB is no sql database",
+   "by": "tutorials point",
+   "url": "http://www.tutorialspoint.com",
+   "tags": ["mongodb", "database", "NoSQL"],
+   "likes": "100"
+}
+>
+NOR in MongoDB
+Syntax
+>db.COLLECTION_NAME.find(
+        {
+                $not: [
+                        {key1: value1}, {key2:value2}
+                ]
+        }
+)
+Example
+db.empDetails.insertMany(
+        [
+                {
+                        First_Name: "Radhika",
+                        Last_Name: "Sharma",
+                        Age: "26",
+                        e_mail: "radhika_sharma.123@gmail.com",
+                        phone: "9000012345"
+                },
+                {
+                        First_Name: "Rachel",
+                        Last_Name: "Christopher",
+                        Age: "27",
+                        e_mail: "Rachel_Christopher.123@gmail.com",
+                        phone: "9000054321"
+                },
+                {
+                        First_Name: "Fathima",
+                        Last_Name: "Sheik",
+                        Age: "24",
+                        e_mail: "Fathima_Sheik.123@gmail.com",
+                        phone: "9000054321"
+                }
+        ]
+)
+
+> db.empDetails.find(
+        {
+                $nor:[
+                        40
+                        {"First_Name": "Radhika"},
+                        {"Last_Name": "Christopher"}
+                ]
+        }
+).pretty()
+{
+        "_id" : ObjectId("5dd631f270fb13eec3963bef"),
+        "First_Name" : "Fathima",
+        "Last_Name" : "Sheik",
+        "Age" : "24",
+        "e_mail" : "Fathima_Sheik.123@gmail.com",
+        "phone" : "9000054321"
+}
+
+NOT in MongoDB
+Syntax
+>db.COLLECTION_NAME.find(
+        {
+                $NOT: [
+                        {key1: value1}, {key2:value2}
+                ]
+        }
+).pretty()
+Example
+> db.empDetails.find( { "Age": { $not: { $gt: "25" } } } )
+{
+        "_id" : ObjectId("5dd6636870fb13eec3963bf7"),
+        "First_Name" : "Fathima",
+        "Last_Name" : "Sheik",
+        "Age" : "24",
+        "e_mail" : "Fathima_Sheik.123@gmail.com",
+        "phone" : "9000054321"
+}
+
+
+MongoDB Update() Method
+
+>db.mycol.update({'title':'MongoDB Overview'},{$set:{'title':'New MongoDB Tutorial'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+>db.mycol.find()
+{ "_id" : ObjectId(5983548781331adf45ec5), "title":"New MongoDB Tutorial"}
+{ "_id" : ObjectId(5983548781331adf45ec6), "title":"NoSQL Overview"}
+{ "_id" : ObjectId(5983548781331adf45ec7), "title":"Tutorials Point Overview"}
+>
+By default, MongoDB will update only a single document. To update multiple documents, you need to set a parameter 'multi' to true.
+>db.mycol.update({'title':'MongoDB Overview'},
+   {$set:{'title':'New MongoDB Tutorial'}},{multi:true})
+The remove() Method
+
+Syntax
+Basic syntax of remove() method is as follows −
+>db.COLLECTION_NAME.remove(DELLETION_CRITTERIA)
+
+db.mycol.remove({'title':'MongoDB Overview'})
+WriteResult({"nRemoved" : 1})
+> db.mycol.find()
+{"_id" : ObjectId("507f191e810c19729de860e2"), "title" : "NoSQL Overview" }
+{"_id" : ObjectId("507f191e810c19729de860e3"), "title" : "Tutorials Point Overview" }
+
+Remove Only One
+If there are multiple records and you want to delete only the first record, then set justOne parameter in remove() method.
+>db.COLLECTION_NAME.remove(DELETION_CRITERIA,1)
+Remove All Documents
+> db.mycol.remove({})
+WriteResult({ "nRemoved" : 2 })
+> db.mycol.find()
+>
+
+MongoDB - Projection
+Syntax
+
+db.COLLECTION_NAME.find({},{KEY:1})
+db.empDetails.find({},{"First_Name":1})
+{ "_id" : ObjectId("5f4650edb6cb26b0f747547d"), "First_Name" : "Rachel" }
+{ "_id" : ObjectId("5f4650efb6cb26b0f747547e"), "First_Name" : "Rachel" }
+{ "_id" : ObjectId("5f4650f1b6cb26b0f747547f"), "First_Name" : "Rachel" }
+ db.empDetails.find({},{"First_Name":1,_id:0})
+{ "First_Name" : "Rachel" }
+{ "First_Name" : "Rachel" }
+{ "First_Name" : "Rachel" }
+> db.empDetails.find({},{First_Name:1,_id:0})
+{ "First_Name" : "Rachel" }
+{ "First_Name" : "Rachel" }
+{ "First_Name" : "Rachel" }
+The Limit() Method
+
+Syntax
+>db.COLLECTION_NAME.find().limit(NUMBER)
+> db.empDetails.find({},{First_Name:1,_id:0}).limit(1)
+{ "First_Name" : "Rachel" }
+db.empDetails.find({"First_Name":"Rachel"}).limit(2)
+{ "_id" : ObjectId("5f4650efb6cb26b0f747547e"), "First_Name" : "Rachel", "Last_Name" : "Christopher", "Age" : "22", "e_mail" : "Rachel_Christopher.123@gmail.com", "phone" : "9632543351" }
+{ "_id" : ObjectId("5f4650f1b6cb26b0f747547f"), "First_Name" : "Rachel", "Last_Name" : "Christopher", "Age" : "22", "e_mail" : "Rachel_Christopher.123@gmail.com", "phone" : "9632543351" }
+> db.empDetails.find({"First_Name":"Rachel"}).limit(2).pretty()
+{
+	"_id" : ObjectId("5f4650efb6cb26b0f747547e"),
+	"First_Name" : "Rachel",
+	"Last_Name" : "Christopher",
+	"Age" : "22",
+	"e_mail" : "Rachel_Christopher.123@gmail.com",
+	"phone" : "9632543351"
+}
+{
+	"_id" : ObjectId("5f4650f1b6cb26b0f747547f"),
+	"First_Name" : "Rachel",
+	"Last_Name" : "Christopher",
+	"Age" : "22",
+	"e_mail" : "Rachel_Christopher.123@gmail.com",
+	"phone" : "9632543351"
+}
+> db.empDetails.find({"First_Name":"Rachel"}).limit(2).pretty()
+{
+	"_id" : ObjectId("5f4650efb6cb26b0f747547e"),
+	"First_Name" : "Rachel",
+	"Last_Name" : "Christopher",
+	"Age" : "22",
+	"e_mail" : "Rachel_Christopher.123@gmail.com",
+	"phone" : "9632543351"
+}
+{
+	"_id" : ObjectId("5f4650f1b6cb26b0f747547f"),
+	"First_Name" : "Rachel",
+	"Last_Name" : "Christopher",
+	"Age" : "22",
+	"e_mail" : "Rachel_Christopher.123@gmail.com",
+	"phone" : "9632543351"
+}
+MongoDB Skip() Method
+
+Syntax
+>db.COLLECTION_NAME.find().limit(NUMBER).skip(NUMBER)
+
+> db.empDetails.find({"First_Name":"Rachel"}).limit(2).skip(1)
+{ "_id" : ObjectId("5f4650f1b6cb26b0f747547f"), "First_Name" : "Rachel", "Last_Name" : "Christopher", "Age" : "22", "e_mail" : "Rachel_Christopher.123@gmail.com", "phone" : "9632543351" }
+{ "_id" : ObjectId("5f46525bb6cb26b0f7475480"), "First_Name" : "Rachel" }
+> db.empDetails.find({"First_Name":"Rachel"}).limit(2).skip(1)
+{ "_id" : ObjectId("5f4650f1b6cb26b0f747547f"), "First_Name" : "Rachel", "Last_Name" : "Christopher", "Age" : "22", "e_mail" : "Rachel_Christopher.123@gmail.com", "phone" : "9632543351" }
+{ "_id" : ObjectId("5f46525bb6cb26b0f7475480"), "First_Name" : "Rachel" }
+> db.empDetails.find({"First_Name":"Rachel"}).limit(2).skip(1).pretty()
+{
+	"_id" : ObjectId("5f4650f1b6cb26b0f747547f"),
+	"First_Name" : "Rachel",
+	"Last_Name" : "Christopher",
+	"Age" : "22",
+	"e_mail" : "Rachel_Christopher.123@gmail.com",
+	"phone" : "9632543351"
+}
+{ "_id" : ObjectId("5f46525bb6cb26b0f7475480"), "First_Name" : "Rachel" }
+> db.empDetails.find({"First_Name":"Rachel"}).limit(2).skip(2).pretty()
+{ "_id" : ObjectId("5f46525bb6cb26b0f7475480"), "First_Name" : "Rachel" }
+{ "_id" : ObjectId("5f465276b6cb26b0f7475481"), "First_Name" : "Rachel" }
+
+The sort() Method
+
+>db.COLLECTION_NAME.find().sort({KEY:1})
+
+> db.empDetails.find().pretty().sort({Age:1})
+{ "_id" : ObjectId("5f46525bb6cb26b0f7475480"), "First_Name" : "Rachel" }
+{ "_id" : ObjectId("5f465276b6cb26b0f7475481"), "First_Name" : "Rachel" }
+{
+	"_id" : ObjectId("5f4650edb6cb26b0f747547d"),
+	"First_Name" : "Radhika",
+	"Last_Name" : "Christopher",
+	"Age" : "22",
+	"e_mail" : "Rachel_Christopher.123@gmail.com",
+	"phone" : "9632543351"
+}
+{
+	"_id" : ObjectId("5f4650efb6cb26b0f747547e"),
+	"First_Name" : "Rachel",
+	"Last_Name" : "Christopher",
+	"Age" : "22",
+	"e_mail" : "Rachel_Christopher.123@gmail.com",
+	"phone" : "9632543351"
+}
+{
+	"_id" : ObjectId("5f4650f1b6cb26b0f747547f"),
+	"First_Name" : "Rachel",
+	"Last_Name" : "Christopher",
+	"Age" : "22",
+	"e_mail" : "Rachel_Christopher.123@gmail.com",
+	"phone" : "9632543351"
+}
+> db.empDetails.find().pretty().sort({_id:1})
+{
+	"_id" : ObjectId("5f4650edb6cb26b0f747547d"),
+	"First_Name" : "Radhika",
+	"Last_Name" : "Christopher",
+	"Age" : "22",
+	"e_mail" : "Rachel_Christopher.123@gmail.com",
+	"phone" : "9632543351"
+}
+{
+	"_id" : ObjectId("5f4650efb6cb26b0f747547e"),
+	"First_Name" : "Rachel",
+	"Last_Name" : "Christopher",
+	"Age" : "22",
+	"e_mail" : "Rachel_Christopher.123@gmail.com",
+	"phone" : "9632543351"
+}
+{
+	"_id" : ObjectId("5f4650f1b6cb26b0f747547f"),
+	"First_Name" : "Rachel",
+	"Last_Name" : "Christopher",
+	"Age" : "22",
+	"e_mail" : "Rachel_Christopher.123@gmail.com",
+	"phone" : "9632543351"
+}
+{ "_id" : ObjectId("5f46525bb6cb26b0f7475480"), "First_Name" : "Rachel" }
+{ "_id" : ObjectId("5f465276b6cb26b0f7475481"), "First_Name" : "Rachel" }
+> db.empDetails.find().pretty().sort({_id:-1})
+{ "_id" : ObjectId("5f465276b6cb26b0f7475481"), "First_Name" : "Rachel" }
+{ "_id" : ObjectId("5f46525bb6cb26b0f7475480"), "First_Name" : "Rachel" }
+{
+	"_id" : ObjectId("5f4650f1b6cb26b0f747547f"),
+	"First_Name" : "Rachel",
+	"Last_Name" : "Christopher",
+	"Age" : "22",
+	"e_mail" : "Rachel_Christopher.123@gmail.com",
+	"phone" : "9632543351"
+}
+{
+	"_id" : ObjectId("5f4650efb6cb26b0f747547e"),
+	"First_Name" : "Rachel",
+	"Last_Name" : "Christopher",
+	"Age" : "22",
+	"e_mail" : "Rachel_Christopher.123@gmail.com",
+	"phone" : "9632543351"
+}
+{
+	"_id" : ObjectId("5f4650edb6cb26b0f747547d"),
+	"First_Name" : "Radhika",
+	"Last_Name" : "Christopher",
+	"Age" : "22",
+	"e_mail" : "Rachel_Christopher.123@gmail.com",
+	"phone" : "9632543351"
+}
+> db.empDetails.find({},{"First_Name":1}).pretty().sort({_id:1})
+{ "_id" : ObjectId("5f4650edb6cb26b0f747547d"), "First_Name" : "Radhika" }
+{ "_id" : ObjectId("5f4650efb6cb26b0f747547e"), "First_Name" : "Rachel" }
+{ "_id" : ObjectId("5f4650f1b6cb26b0f747547f"), "First_Name" : "Rachel" }
+{ "_id" : ObjectId("5f46525bb6cb26b0f7475480"), "First_Name" : "Rachel" }
+{ "_id" : ObjectId("5f465276b6cb26b0f7475481"), "First_Name" : "Rachel" }
+> db.empDetails.find({},{"First_Name":1}).pretty().sort({First_Name:1})
+{ "_id" : ObjectId("5f4650efb6cb26b0f747547e"), "First_Name" : "Rachel" }
+{ "_id" : ObjectId("5f4650f1b6cb26b0f747547f"), "First_Name" : "Rachel" }
+{ "_id" : ObjectId("5f46525bb6cb26b0f7475480"), "First_Name" : "Rachel" }
+{ "_id" : ObjectId("5f465276b6cb26b0f7475481"), "First_Name" : "Rachel" }
+{ "_id" : ObjectId("5f4650edb6cb26b0f747547d"), "First_Name" : "Radhika" }
+> db.empDetails.find({},{"First_Name":1}).pretty().sort({First_Name:1})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MongoDB - Indexing
+
+The createIndex() Method
+
+o create an index, you need to use createIndex() method of MongoDB.
+Syntax
+The basic syntax of createIndex() method is as follows().
+>db.COLLECTION_NAME.createIndex({KEY:1})
+ db.empDetails.createIndex({First_Name:1})
+{
+	"createdCollectionAutomatically" : false,
+	"numIndexesBefore" : 1,
+	"numIndexesAfter" : 2,
+	"ok" : 1
+}
+> db.empDetails.find().pretty()
+{
+	"_id" : ObjectId("5f4650edb6cb26b0f747547d"),
+	"First_Name" : "Radhika",
+	"Last_Name" : "Christopher",
+	"Age" : "22",
+	"e_mail" : "Rachel_Christopher.123@gmail.com",
+	"phone" : "9632543351"
+}
+{
+	"_id" : ObjectId("5f4650efb6cb26b0f747547e"),
+	"First_Name" : "Rachel",
+	"Last_Name" : "Christopher",
+	"Age" : "22",
+	"e_mail" : "Rachel_Christopher.123@gmail.com",
+	"phone" : "9632543351"
+}
+{
+	"_id" : ObjectId("5f4650f1b6cb26b0f747547f"),
+	"First_Name" : "Rachel",
+	"Last_Name" : "Christopher",
+	"Age" : "22",
+	"e_mail" : "Rachel_Christopher.123@gmail.com",
+	"phone" : "9632543351"
+}
+{ "_id" : ObjectId("5f46525bb6cb26b0f7475480"), "First_Name" : "Rachel" }
+{ "_id" : ObjectId("5f465276b6cb26b0f7475481"), "First_Name" : "Rachel" }
+> db.empDetails.getIndex
+db.empDetails.getIndexKeys(   db.empDetails.getIndexes(
+db.empDetails.getIndexSpecs(
+> db.empDetails.getIndexes()
+[
+	{
+		"v" : 2,
+		"key" : {
+			"_id" : 1
+		},
+		"name" : "_id_",
+		"ns" : "test.empDetails"
+	},
+	{
+		"v" : 2,
+		"key" : {
+			"First_Name" : 1
+		},
+		"name" : "First_Name_1",
+		"ns" : "test.empDetails"
+	}
+]
+MongoDB - Aggregation
+
+The aggregate() Method
+
+Syntax
+Basic syntax of aggregate() method is as follows −
+>db.COLLECTION_NAME.aggregate(AGGREGATE_OPERATION)
+
+> db.empDetails.aggregate({$group:{_id:"$First_Name",num_names:{$sum:1}}})
+{ "_id" : "Rachel", "num_names" : 4 }
+{ "_id" : "Radhika", "num_names" : 1 }
+> db.empDetails.aggregate({$group:{_id:"$First_Name",num_names:{$sum:-1}}})
+{ "_id" : "Rachel", "num_names" : -4 }
+{ "_id" : "Radhika", "num_names" : -1 }
+> db.empDetails.aggregate({$group:{_id:"$Last_Name",num_names:{$sum:1}}})
+{ "_id" : null, "num_names" : 2 }
+{ "_id" : "Christopher", "num_names" : 3 }
+> db.empDetails.aggregate({$group:{_id:"$Last_Name",num_names:{$avg:1}}})
+{ "_id" : null, "num_names" : 1 }
+{ "_id" : "Christopher", "num_names" : 1 }
+> db.empDetails.aggregate({$group:{_id:"$Last_Name",num_names:{$max:1}}})
+{ "_id" : null, "num_names" : 1 }
+{ "_id" : "Christopher", "num_names" : 1 }
+
