@@ -71,7 +71,7 @@ class UnparkingSerializer(serializers.ModelSerializer):
     def validate(self,data):
         vehicle_number = data.get('vehicle_number')
         try:
-            vehicle_details = Parking.objects.get(vehicle_number=vehicle_number)
+            vehicle_details = Parking.objects.filter(vehicle_number=vehicle_number)
         except ObjectDoesNotExist as e:
             print(e)
             raise VehicleDoesNotExist(detail="Vehicle is not present with the Vehicle Number",code=400)
@@ -80,8 +80,6 @@ class UnparkingSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         validated_data['slot']=None
         validated_data['exit_time']=timezone.now()
-        parking_obj = Parking.objects.filter(vehicle_number=validated_data['vehicle_number']).latest('id')
+        parking_obj = Parking.objects.filter(vehicle_number=validated_data['vehicle_number']).order_by("-pk")[:1]
         obj = super().update(instance, validated_data)
-        return obj
-    # def validators(self, validators):
-    #     return super().validators(validators)
+        return parking_obj
