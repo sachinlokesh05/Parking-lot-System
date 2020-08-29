@@ -18,6 +18,7 @@ from django.urls import path,include
 from user.views import Register,Login,Logout
 from parking.views import CreateParkingView,Unparking,GetVehicle
 from rest_framework.routers import DefaultRouter
+from django.conf import settings
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
@@ -34,3 +35,9 @@ urlpatterns = [
     path('',include(router.urls))
 ]
 
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns = [
+                      path('__debug__/', include(debug_toolbar.urls)),
+                  ] + urlpatterns

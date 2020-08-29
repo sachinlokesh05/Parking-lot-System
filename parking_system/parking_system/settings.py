@@ -50,6 +50,8 @@ INSTALLED_APPLICATION = [
 THIR_PARTY_APPLICATION = [
     'djongo',
     'rest_framework',
+    'debug_toolbar',
+    'djcelery'
 ]
 
 INSTALLED_APPS += INSTALLED_APPLICATION + THIR_PARTY_APPLICATION
@@ -62,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'parking_system.urls'
@@ -161,3 +164,20 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
+
+BROKER_TRANSPORT = "redis"
+BROKER_HOST = "localhost"  # Maps to redis host.
+BROKER_PORT = 6379         # Maps to redis port.
+BROKER_VHOST = "0"  
+
+# CELERY STUFF
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Calcutta'
+
+import djcelery
+djcelery.setup_loader()
+INTERNAL_IPS = ['127.0.0.1']

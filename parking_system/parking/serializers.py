@@ -72,10 +72,10 @@ class UnparkingSerializer(serializers.ModelSerializer):
         vehicle_number = data.get('vehicle_number')
         try:
             vehicle_details = Parking.objects.filter(vehicle_number=vehicle_number)
+            return super(UnparkingSerializer, self).validate(data)
         except ObjectDoesNotExist as e:
-            print(e)
             raise VehicleDoesNotExist(detail="Vehicle is not present with the Vehicle Number",code=400)
-        return super(UnparkingSerializer, self).validate(data)
+        
 
     def update(self, instance, validated_data):
         validated_data['slot']=None

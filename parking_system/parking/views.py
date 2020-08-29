@@ -12,6 +12,7 @@ from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from .utils import calculate_charges
 from rest_framework import viewsets
+from django.db import DataError
 class CreateParkingView(LoginRequiredMixin,ListCreateAPIView):
     login_url= "login"
     queryset = Parking.objects.all()
@@ -35,13 +36,15 @@ def Unparking(request,*args,**kwargs):
     unparking_vehicle.is_valid(raise_exception=True)
     try:
         parking_obj = Parking.objects.filter(vehicle_number=request.query_params['vehicle_number'],exit_time=None).latest('id')
+        value = unparking_vehicle.update(instance=parking_obj,validated_data=unparking_vehicle.data)
+        vehicle_details=value.only('id','vehicle_type','entry_time','exit_time','user_details','parking_type')
+        total_charges = calculate_charges(vehicle_details[0])
+        return Response(data=f"Unparking succefully,Thank You,Your Parking Charge is: {total_charges}",status=status.HTTP_200_OK)
     except ObjectDoesNotExist:
         return Response(data="Vehicle is already unparked,Sorry",status=status.HTTP_400_BAD_REQUEST)
-    value = unparking_vehicle.update(instance=parking_obj,validated_data=unparking_vehicle.data)
-    vehicle_details=value.only('id','vehicle_type','entry_time','exit_time','user_details','parking_type')
-    print(vehicle_details[0])
-    total_charges = calculate_charges(vehicle_details[0])
-    return Response(data=f"Unparking succefully,Thank You,Your Parking Charge is: {total_charges}",status=status.HTTP_200_OK)
+    except DataError :
+        return ""
+
 
 
 class GetVehicle(viewsets.ReadOnlyModelViewSet):
