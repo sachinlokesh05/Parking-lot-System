@@ -28,6 +28,8 @@ Return: unpark the vehicle and return the parking charges
 @api_view(['GET'])
 def Unparking(request,*args,**kwargs):
     data = request.query_params
+    if not data: 
+        return Response(data="Please mention valid vehicle number",status=status.HTTP_400_BAD_REQUEST) 
     unparking_vehicle = UnparkingSerializer(data=data,partial=True)
     unparking_vehicle.is_valid(raise_exception=True)
     try:
