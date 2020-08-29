@@ -11,13 +11,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from .utils import calculate_charges
+from rest_framework import viewsets
 class CreateParkingView(LoginRequiredMixin,ListCreateAPIView):
     login_url= "login"
     queryset = Parking.objects.all()
     serializer_class = CreateParkingSerializer
-
-
-
 
 """"
 Unparking API

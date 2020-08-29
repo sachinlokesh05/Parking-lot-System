@@ -15,7 +15,7 @@ class CreateParkingSerializer(serializers.ModelSerializer):
         model = Parking
         # fields = "__all__"
 
-        exclude = ['entry_time','exit_time',"slot"]
+        exclude = ['entry_time','exit_time',"slot","user_details"]
 
     def create(self, validated_data):
         from random import randint
@@ -28,10 +28,10 @@ class CreateParkingSerializer(serializers.ModelSerializer):
             except ObjectDoesNotExist:
                 query_slot = 0
         validated_data["slot"] = new_slot
-
         return super().create(validated_data)
 
     def save(self, **kwargs):
+        self.validated_data['user_details'] = self._context['request'].user 
         user = self.validated_data['user_details']
         try:
             email_list = User.objects.get(username=user).email
