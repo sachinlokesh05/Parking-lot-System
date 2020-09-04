@@ -24,11 +24,12 @@ class Register(APIView):
 
         try:
             group = Group.objects.get(name=request.data['roles'])
+            user = serializer.save()    
+            user.groups.add(group)    
+            return Response(data="Succefully Registered",status=status.HTTP_201_CREATED)
         except Exception :
             return Response(data="Role Does not Exist",status=status.HTTP_404_NOT_FOUND)
-        user = serializer.save()    
-        user.groups.add(group)    
-        return Response(data="Succefully Registered",status=status.HTTP_201_CREATED)
+        
 
 
 @api_view(['POST'])
@@ -37,25 +38,22 @@ def Login(request):
         return Response(data="User already logged in,Do logout and Try login",status=status.HTTP_405_METHOD_NOT_ALLOWED)
     try:
         form = LoginForm(request.data)
+        if form.is_valid():
+            auth = EmailOrUsernameModelBackend()
+            username = form.cleaned_data['username_or_email']
+            password = form.cleaned_data['password']
+            user = auth.authenticate(request,username=username,password=password)
+            login(request,user,backend='django.contrib.auth.backends.ModelBackend')
+            return Response(data="User Login in Succefully",status=status.HTTP_200_OK)
+        return Response(data=f"User Login is Failled",status=status.HTTP_400_BAD_REQUEST)
     except form.FieldDoesNotExist:
         return FieldDoesNotExist()
-    if form.is_valid():
-        auth = EmailOrUsernameModelBackend()
-        username = form.cleaned_data['username_or_email']
-        password = form.cleaned_data['password']
-        try:
-            user = auth.authenticate(request,username=username,password=password)
-        except Exception as e:
-            raise AuthenticationFailed(detail="User Authentication failed",code=404)
-        login(request,user,backend='django.contrib.auth.backends.ModelBackend')
-        return Response(data="User Login in Succefully",status=status.HTTP_200_OK)
-    return Response(data=f"User Login is Failled",status=status.HTTP_400_BAD_REQUEST)
-
-
+    except Exception as e:
+        raise AuthenticationFailed(detail="User Authentication failed",code=404)
 @api_view(['GET'])
 def Logout(request):
     try:
         logout(request)
+        return Response(data="Logged Out Succefully,Thank YOU",status=status.HTTP_200_OK)
     except LogOutFailed:
         return LogOutFailed
-    return Response(data="Logged Out Succefully,Thank YOU",status=status.HTTP_200_OK)
