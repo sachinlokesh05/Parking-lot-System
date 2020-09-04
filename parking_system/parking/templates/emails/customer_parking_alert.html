@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alert mail</title>
+<style>
+/* 
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+} */
+
+.column {
+
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+    /* Should be removed. Only for demonstration */
+}
+
+.left, .right {
+  width: 25%;
+}
+
+.middle {
+  width: 60%;
+}
+
+.middle_footer{
+width: 30%;
+}
+#logo {
+  font-family: 'Open Sans', sans-serif;
+  color:black;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 50px;
+  font-weight: 800;
+  letter-spacing: -3px;
+  position: relative;
+}
+.right_text {
+  position: absolute;
+  right: 200px;
+  width: 800px;
+  border: 3px solid #555;
+  padding: 10px;
+}
+.menu_text {
+    color: aliceblue;
+  width: 1090px;
+  height: 42px;
+  list-style: none;
+  margin: 10px 0 0 0; padding: 25px 10px;
+  border-top: 4px double #AAA;
+  border-bottom: 4px double #AAA;
+  position: relative;
+  text-align: center;
+}
+
+</style>
+
+
+
+<body >
+
+    <div style="width:100%;height:100%;background-color: darkslategray;">
+        <div class="column" align="center">
+            <div class="w3-col.m8" >
+                  <h2 id="logo">RCB Parking System</h2><br>
+                  <h4 id ="menu_text">Parking Reminder mail </h4><br>
+                  <!--div class="fakeimg">Fake Image<!/div-->
+                  <p>Parking Alert for : {{ user }}.  </p>
+                <br> <div class="nav nav-pills nav-justified" style="background-image: url();">
+                    Hi {{ vehicle_owner }},Your Vehicle number is Parked in our lot,Thank You for Ur Time "
+                </div>
+
+                 </div>
+
+
+                 <div   style="display: flex;justify-content: space-evenly;" >
+                     <div>
+                         <p style="color:burlywood;background-color:rgb(31, 29, 29);width: 150px;height: 150px;border: black solid 1px;display: flex;justify-content: center;align-items:center ;">
+                            Slot Number <br> {{ slot }}
+                        </p>
+                     </div>
+                     <div>
+                        <p style="color:burlywood;background-color: rgb(31, 29, 29);width: 150px;height: 150px;border: black solid 1px;display: flex;justify-content: center;align-items:center ;"">
+                       Vehicle Number<br> {{ vehicle_number }}
+                    </p> 
+                    </div>
+                    <div>
+                        <p style="color:burlywood;background-color: rgb(31, 29, 29);width: 150px;height: 150px;border: black solid 1px;display: flex;justify-content: center;align-items:center ;"">
+                       Start Time <br> {{ start_time }}</p> 
+                    </div>
+                </div>
+            <div class="col-2 offset-5" >
+                <br><br>
+                <small style="font-size: x-small">
+                <p class="column middle_footer" style="background-color: gainsboro;">
+                © Bridge Parking Lot., 2019
+                Near HSR layout,
+                Bengaluru 5600234
+                  </p>  </small><br>
+                </div>
+
+
+
+        </div>
+    </div>
+
+
+</body>
+</html>

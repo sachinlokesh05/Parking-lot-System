@@ -51,7 +51,9 @@ THIR_PARTY_APPLICATION = [
     'djongo',
     'rest_framework',
     'debug_toolbar',
-    'djcelery'
+    'celery',
+    'django_celery_beat',
+    'django_celery_results',
 ]
 
 INSTALLED_APPS += INSTALLED_APPLICATION + THIR_PARTY_APPLICATION
@@ -148,6 +150,9 @@ AUTHENTICATION_BACKENDS = (
 # Email Backend Settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+# Celery email back-end
+# EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
+
 # Host for sending e-mail.
 EMAIL_HOST = get_secret("EMAIL_HOST")
 
@@ -165,19 +170,10 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 }
 
-BROKER_TRANSPORT = "redis"
-BROKER_HOST = "localhost"  # Maps to redis host.
-BROKER_PORT = 6379         # Maps to redis port.
-BROKER_VHOST = "0"  
-
-# CELERY STUFF
-BROKER_URL = 'redis://localhost:6379'
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Asia/Calcutta'
-
-import djcelery
-djcelery.setup_loader()
-INTERNAL_IPS = ['127.0.0.1']
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_ENABLE_UTC=True

@@ -13,6 +13,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from .utils import calculate_charges
 from rest_framework import viewsets
 from django.db import DataError
+from parking.mailservice import EmailClass
+from smtplib import SMTPException
 class CreateParkingView(LoginRequiredMixin,ListCreateAPIView):
     login_url= "login"
     queryset = Parking.objects.all()
@@ -39,12 +41,20 @@ def Unparking(request,*args,**kwargs):
         value = unparking_vehicle.update(instance=parking_obj,validated_data=unparking_vehicle.data)
         vehicle_details=value.only('id','vehicle_type','entry_time','exit_time','user_details','parking_type')
         total_charges = calculate_charges(vehicle_details[0])
+        kwargs['charges'] = total_charges
+        kwargs['vehicle_owner'] = request.user.username
+        kwargs['vehicle_number'] = vehicle_details[0].vehicle_number
+        kwargs['subject'] = "Parking Alert !!!!!"
+        kwargs['recepients'] = vehicle_details[0].user_details.email
+        kwargs['template_name'] = "emails/customer_unparking_alert.html"
+        EmailClass.send_email(**kwargs)
         return Response(data=f"Unparking succefully,Thank You,Your Parking Charge is: {total_charges}",status=status.HTTP_200_OK)
     except ObjectDoesNotExist:
         return Response(data="Vehicle is already unparked,Sorry",status=status.HTTP_400_BAD_REQUEST)
-    except DataError :
-        return ""
-
+    except DataError as e :
+        return Response(data=f"Something happend with Data base {e} ",status=status.HTTP_400_BAD_REQUEST)
+    except SMTPException as e :
+        return ('There was an error sending an email: ', e)
 
 
 class GetVehicle(viewsets.ReadOnlyModelViewSet):

@@ -9,6 +9,10 @@ from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
+from .mailservice import EmailClass
+from parking_system.settings import EMAIL_HOST_USER
+import datetime
+from smtplib import SMTPException
 
 class CreateParkingSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,7 +21,7 @@ class CreateParkingSerializer(serializers.ModelSerializer):
 
         exclude = ['entry_time','exit_time',"slot","user_details"]
 
-    def create(self, validated_data):
+    def create(self, validated_data,**kwargs):
         from random import randint
         query_slot = 1
         new_slot = 0
@@ -28,13 +32,24 @@ class CreateParkingSerializer(serializers.ModelSerializer):
             except ObjectDoesNotExist:
                 query_slot = 0
         validated_data["slot"] = new_slot
+        kwargs['subject'] = "Parking Alert !!!!!"
+        kwargs['vehicle_owner'] = validated_data['user_details'].username
+        kwargs['vehicle_number'] = validated_data['vehicle_number']
+        kwargs['vehicle_slot'] = validated_data['slot']
+        kwargs['start_time'] = datetime.datetime.now()
+        kwargs['recepients'] = validated_data['user_details'].email
+        kwargs['template_name'] = "emails/customer_parking_alert.html"
+        try:
+            EmailClass.send_email(**kwargs)
+        except SMTPException as e :
+            return ('There was an error sending an email: ', e) 
         return super().create(validated_data)
 
     def save(self, **kwargs):
         self.validated_data['user_details'] = self._context['request'].user 
         user = self.validated_data['user_details']
         try:
-            email_list = User.objects.get(username=user).email
+            email_list = User.objects.get(username=user)
         except ObjectDoesNotExist:
             raise DoesNotExist("User email Not Exist")
         return super().save(**kwargs)
