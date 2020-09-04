@@ -5,7 +5,6 @@ from rest_framework.exceptions import NotAcceptable,NotAcceptable,ValidationErro
 class RegisterUserSerializer(serializers.ModelSerializer):
     """Serializer definition for LoginSerializer."""
     confirm_password =  serializers.CharField(write_only=True)
-
     roles = serializers.CharField()
     class Meta:
         """Meta definition for LoginSerializer."""
@@ -29,15 +28,10 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         return value
 
     def validate(self, data):
-         # here data has all the fields which have validated values
-         # so we can create a User instance out of it
-
-         # get the password from the data
         password = data.get('password')
         confirm_password = data.get('confirm_password')
         if password != confirm_password :
             raise ValidationError(detail="password are not matching",code=403)
-
         return super(RegisterUserSerializer, self).validate(data)
 
 

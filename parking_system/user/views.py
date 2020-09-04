@@ -30,8 +30,6 @@ class Register(APIView):
         except Exception :
             return Response(data="Role Does not Exist",status=status.HTTP_404_NOT_FOUND)
         
-
-
 @api_view(['POST'])
 def Login(request):
     if request.user.is_authenticated:
@@ -50,6 +48,7 @@ def Login(request):
         return FieldDoesNotExist()
     except Exception as e:
         raise AuthenticationFailed(detail="User Authentication failed",code=404)
+    
 @api_view(['GET'])
 def Logout(request):
     try:
