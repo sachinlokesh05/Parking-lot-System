@@ -17,7 +17,7 @@ def send_mail_system(**kwargs):
                         'start_time':kwargs.get('start_time',None),
                         'vehicle_number':kwargs.get('vehicle_number',None),
                         'slot':kwargs.get('vehicle_slot',None),
-                        'charges':kwargs.get('vehicle_slot',None),
+                        'charges':kwargs.get('charges',None),
                     })
     subject, from_email, to = mail_subject, email_from, recipient_email
     msg = EmailMultiAlternatives(subject, mail_message, from_email, [to])

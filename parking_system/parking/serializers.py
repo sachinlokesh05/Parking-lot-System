@@ -22,15 +22,14 @@ class CreateParkingSerializer(serializers.ModelSerializer):
         exclude = ['entry_time','exit_time',"slot","user_details"]
 
     def create(self, validated_data,**kwargs):
+        query_slot = Parking.objects.values_list('slot', flat=True)
+        slot_list = list(query_slot)
         from random import randint
-        query_slot = 1
-        new_slot = 0
-        while  query_slot :
-            new_slot = randint(0,400)
-            try:
-                query_slot = Parking.objects.get(slot=new_slot)
-            except ObjectDoesNotExist:
-                query_slot = 0
+        new_slot = randint(0,400)
+        print(new_slot,slot_list)
+        if slot_list in query_slot :
+            print(new_slot)
+            query_slot = 150
         validated_data["slot"] = new_slot
         kwargs['subject'] = "Parking Alert !!!!!"
         kwargs['vehicle_owner'] = validated_data['user_details'].username
