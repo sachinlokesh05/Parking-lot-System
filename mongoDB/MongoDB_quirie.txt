@@ -508,6 +508,8 @@ db.empDetails.getIndexSpecs(
 ]
 MongoDB - Aggregation
 
+pipeline, map-reduce function, and single purpose aggregation
+
 The aggregate() Method
 
 Syntax
@@ -960,4 +962,100 @@ db.student.update( { _id: ObjectId("5e1a890870be6e1146e53524")}, { $pop: { subje
                 "science",
                 "physical education"
         ]
+}
+Single Purpose Aggregation Operations¶
+
+> db.student.distinct("name")
+[
+	"John Bennet",
+	"Drew Scarlet",
+	"James Hampsheire",
+	"Dale Duke",
+	"Russel Brooke"
+]
+> db.student.count()
+5
+
+$sort Stage
+
+ db.student.aggregate([{$sort:{age:-1}}]).pretty()
+{
+	"_id" : ObjectId("5f55c0d919543ebdedfcac09"),
+	"name" : "Dale Duke",
+	"age" : "25",
+	"course" : "Tourism",
+	"email" : "dale@example.com",
+	"subject" : [
+		"science",
+		"social studies"
+	]
+}
+{
+	"_id" : ObjectId("5f55c0d919543ebdedfcac07"),
+	"name" : "Drew Scarlet",
+	"age" : 17,
+	"course" : "Information Technology",
+	"email" : "drew@example.com"
+}
+{
+	"_id" : ObjectId("5f55c0d919543ebdedfcac0a"),
+	"name" : "Russel Brooke",
+	"age" : 17,
+	"course" : "Software Engineer",
+	"email" : "rommel@example.com"
+}
+{
+	"_id" : ObjectId("5f55c0d919543ebdedfcac06"),
+	"name" : "John Bennet",
+	"age" : 16,
+	"course" : "Business Management",
+	"email" : "john@example.com"
+}
+{
+	"_id" : ObjectId("5f55c0d919543ebdedfcac08"),
+	"name" : "James Hampsheire",
+	"age" : 16,
+	"course" : "Information Technology",
+	"email" : "james@example.com"
+}
+
+> db.student.aggregate([{$sort:{name:1,age:1,}}]).pretty()
+{
+	"_id" : ObjectId("5f55c0d919543ebdedfcac09"),
+	"name" : "Dale Duke",
+	"age" : "25",
+	"course" : "Tourism",
+	"email" : "dale@example.com",
+	"subject" : [
+		"science",
+		"social studies"
+	]
+}
+{
+	"_id" : ObjectId("5f55c0d919543ebdedfcac07"),
+	"name" : "Drew Scarlet",
+	"age" : 17,
+	"course" : "Information Technology",
+	"email" : "drew@example.com"
+}
+{
+	"_id" : ObjectId("5f55c0d919543ebdedfcac08"),
+	"name" : "James Hampsheire",
+	"age" : 16,
+	"course" : "Information Technology",
+	"email" : "james@example.com"
+}
+{
+	"_id" : ObjectId("5f55c0d919543ebdedfcac06"),
+	"name" : "John Bennet",
+	"age" : 16,
+	"course" : "Business Management",
+	"email" : "john@example.com"
+}
+{
+	"_id" : ObjectId("5f55c0d919543ebdedfcac0a"),
+	"name" : "Russel Brooke",
+	"age" : 17,
+	"course" : "Software Engineer",
+	"email" : "rommel@example.com"
 }
