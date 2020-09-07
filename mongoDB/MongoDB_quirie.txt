@@ -918,3 +918,46 @@ $group Stage
 	}
 }
 
+SET FIELDS IN DOCUMENT
+
+{ "_id" : ObjectId("5e1a890870be6e1146e53524"), "name" : "Dale Duke", "age" : 17, "course" : "Tourism", "email" : "dale@example.com" }
+
+PUSH ARRAYS IN DOCUMENT
+
+db.student.update({ _id:ObjectId("5e1a890870be6e1146e53524") },
+                       { $push:
+                           { subjects:
+                               { $each: [ "math", "science", "physical education" ]
+                               }
+                           }
+                       });
+
+ db.student.find({_id:ObjectId("5e1a890870be6e1146e53524")}).pretty();
+{
+        "_id" : ObjectId("5e1a890870be6e1146e53524"),
+        "name" : "Dale Duke",
+        "age" : 17,
+        "course" : "Tourism",
+        "email" : "dale@example.com",
+        "subjects" : [
+                "math",
+                "science",
+                "physical education"
+        ]
+}
+
+REMOVE FIELDS IN ARRAYS
+
+db.student.update( { _id: ObjectId("5e1a890870be6e1146e53524")}, { $pop: { subjects: -1 } } );
+
+{
+        "_id" : ObjectId("5e1a890870be6e1146e53524"),
+        "name" : "Dale Duke",
+        "age" : 17,
+        "course" : "Tourism",
+        "email" : "dale@example.com",
+        "subjects" : [
+                "science",
+                "physical education"
+        ]
+}
