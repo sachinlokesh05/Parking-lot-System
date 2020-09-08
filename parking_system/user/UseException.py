@@ -1,13 +1,13 @@
 from rest_framework.exceptions import APIException
 
 class RoleNotExist(APIException):
-    detail = "Mentioned Role is not present Under User"
-    code = 404
+    default_detail = "Mentioned Role is not present Under User"
+    status_code = 404
 
 class LogOutFailed(APIException):
-    detail = "Failed to SignOut,Please Try again later"
+    status_code = "Failed to SignOut,Please Try again later"
 
 
 class SomeOneIsLoggedInAlready(APIException):
-    detail="Already Someone is logged in,Please Logout and Try Login"
-    code = 400
+    default_detail="Already Someone is logged in,Please Logout and Try Login"
+    status_code = 400
