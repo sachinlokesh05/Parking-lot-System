@@ -4,7 +4,7 @@ from mongoengine.errors import DoesNotExist
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.db.models import Count, F, Subquery, Value
-from .ParkingException import VehicleDoesNotExist
+from .ParkingException import VehicleDoesNotExist,ParkingLotFullException
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from django.utils import timezone
@@ -23,22 +23,25 @@ class CreateParkingSerializer(serializers.ModelSerializer):
         exclude = ['entry_time','exit_time',"slot","user_details"]
 
     def create(self, validated_data,**kwargs):
-        query_slot = Parking.objects.values_list('slot', flat=True)
-        slot_list = list(query_slot)
-        new_slot = get_slot(slot_list)
-        validated_data["slot"] = new_slot
-        kwargs['subject'] = "Parking Alert !!!!!"
-        kwargs['vehicle_owner'] = validated_data['user_details'].username
-        kwargs['vehicle_number'] = validated_data['vehicle_number']
-        kwargs['vehicle_slot'] = validated_data['slot']
-        kwargs['start_time'] = datetime.datetime.now()
-        kwargs['recepients'] = validated_data['user_details'].email
-        kwargs['template_name'] = "emails/customer_parking_alert.html"
         try:
+            query_slot = Parking.objects.values_list('slot', flat=True)
+            slot_list = list(query_slot)
+            new_slot = get_slot(slot_list)
+            validated_data["slot"] = new_slot
+            kwargs['subject'] = "Parking Alert !!!!!"
+            kwargs['vehicle_owner'] = validated_data['user_details'].username
+            kwargs['vehicle_number'] = validated_data['vehicle_number']
+            kwargs['vehicle_slot'] = validated_data['slot']
+            kwargs['start_time'] = datetime.datetime.now()
+            kwargs['recepients'] = validated_data['user_details'].email
+            kwargs['template_name'] = "emails/customer_parking_alert.html"
             EmailClass.send_email(**kwargs)
+            return super().create(validated_data)
         except SMTPException as e :
-            return ('There was an error sending an email: ', e) 
-        return super().create(validated_data)
+            return ('There was an error sending an email: ', e)
+        except ParkingLotFullException as e :
+            raise ParkingLotFullException()
+        
 
     def save(self, **kwargs):
         self.validated_data['user_details'] = self._context['request'].user 

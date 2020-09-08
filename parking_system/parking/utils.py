@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from .models import DriverFees,VehicalFees,ParkingFees
 from django.contrib.auth.models import Group
-
+from .ParkingException import ParkingLotFullException
 """
 Method to calculate charge of parking based on types
 
@@ -44,8 +44,11 @@ Return: returns the slot based on the order of slot number
 """
 
 def get_slot(slot_list):
-    import random 
     slots_400 = list(range(0,400))
     rest_slots = set(slots_400).difference(set(slot_list))
-    vehicle_slot = list(rest_slots)[0]
-    return vehicle_slot
+    try:
+        vehicle_slot = list(rest_slots)[0]
+        return vehicle_slot
+    except IndexError as e:
+        raise ParkingLotFullException()
+    
