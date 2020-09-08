@@ -13,7 +13,8 @@ from .mailservice import EmailClass
 from parking_system.settings import EMAIL_HOST_USER
 import datetime
 from smtplib import SMTPException
-
+from .utils import get_slot
+import random
 class CreateParkingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Parking
@@ -24,12 +25,7 @@ class CreateParkingSerializer(serializers.ModelSerializer):
     def create(self, validated_data,**kwargs):
         query_slot = Parking.objects.values_list('slot', flat=True)
         slot_list = list(query_slot)
-        from random import randint
-        new_slot = randint(0,400)
-        print(new_slot,slot_list)
-        if slot_list in query_slot :
-            print(new_slot)
-            query_slot = 150
+        new_slot = get_slot(slot_list)
         validated_data["slot"] = new_slot
         kwargs['subject'] = "Parking Alert !!!!!"
         kwargs['vehicle_owner'] = validated_data['user_details'].username

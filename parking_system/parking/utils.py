@@ -34,3 +34,18 @@ Return: it return the time in hours
 def get_parking_hours(entry_time, exit_time):
     total_time = exit_time - entry_time
     return total_time.seconds/3600
+
+"""
+Get slot from the parking slot
+
+Keyword arguments:
+slot_list -- slots of already parked vehicles
+Return: returns the slot based on the order of slot number
+"""
+
+def get_slot(slot_list):
+    import random 
+    slots_400 = list(range(0,400))
+    rest_slots = set(slots_400).difference(set(slot_list))
+    vehicle_slot = list(rest_slots)[0]
+    return vehicle_slot
