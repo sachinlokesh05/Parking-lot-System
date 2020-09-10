@@ -9,11 +9,12 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import configparser
 from pathlib import Path
 from mongoengine import *
 from .base import get_secret
-import logging.config
+import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
@@ -25,7 +26,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = get_secret("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['54.149.63.203', 'localhost', '127.0.0.1']
 
@@ -51,10 +52,12 @@ INSTALLED_APPLICATION = [
 THIR_PARTY_APPLICATION = [
     'djongo',
     'rest_framework',
+    'rest_framework.authtoken',
     'debug_toolbar',
     'celery',
-    'django_celery_beat',
     'django_celery_results',
+    'rest_framework_swagger',
+    'drf_yasg'
 ]
 
 INSTALLED_APPS += INSTALLED_APPLICATION + THIR_PARTY_APPLICATION
@@ -78,7 +81,7 @@ ROOT_URLCONF = 'parking_system.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -141,7 +144,7 @@ STATIC_URL = '/static/'
 
 DATABASES = {
     'default': {'ENGINE': get_secret("DJONGO_ENGINE"),
-    'name':get_secret("DJONGO_NAME")}
+    'name':get_secret("DJONGO_NAME")},
 }
 
 # Authentication Backend Settings
@@ -233,3 +236,5 @@ LOGGING = {
         },
     },
 }
+
+REST_FRAMEWORK = { 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' }
