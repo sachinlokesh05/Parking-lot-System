@@ -20,6 +20,31 @@ from parking.views import CreateParkingView,Unparking,GetVehicle
 from rest_framework.routers import DefaultRouter
 from django.conf import settings
 
+# Swagger imports 
+from django.conf.urls import url
+from django.urls import re_path
+from django.views.generic import TemplateView
+from rest_framework_swagger.views import get_swagger_view  
+schema_view = get_swagger_view(title='Parking Lot System API')
+
+# drf_yasg code starts here
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="RCB Parking Lot System",
+        default_version='v1',
+        description="Welcome to RCB parking lot",
+        terms_of_service="https://www.jaseci.org",
+        contact=openapi.Contact(email="jason@jaseci.org"),
+        license=openapi.License(name="#RCBForEver"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
+
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
 router.register(r'search',GetVehicle)
@@ -33,7 +58,7 @@ urlpatterns = [
     path('park', CreateParkingView.as_view(),name="parking"),
     path('unpark/', Unparking,name="unparking"),
     path('',include(router.urls))
-]
+] 
 
 if settings.DEBUG:
     import debug_toolbar
@@ -41,3 +66,11 @@ if settings.DEBUG:
     urlpatterns = [
                       path('__debug__/', include(debug_toolbar.urls)),
                   ] + urlpatterns
+urlpatterns += [
+    re_path(r'^doc(?P<format>\.json|\.yaml)$',
+            schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    path('doc/', schema_view.with_ui('swagger', cache_timeout=0),
+         name='schema-swagger-ui'),  
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0),
+         name='schema-redoc'),  
+]
