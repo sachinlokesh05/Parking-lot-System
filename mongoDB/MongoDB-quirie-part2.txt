@@ -1,0 +1,262 @@
+Aggregation
+-match Stage
+    > db.dummy.aggregate([{$match:{isActive:true}}])
+{ "_id" : "5f5486f13408709c31f58c02", "index" : 0, "guid" : "e7a05ac2-7968-49e7-9706-3b5642c28d5b", "isActive" : true, "balance" : "$1,729.14", "picture" : "http://placehold.it/32x32", "age" : 37, "eyeColor" : "green", "name" : "Elisabeth Wise", "gender" : "female", "company" : "BICOL", "email" : "elisabethwise@bicol.com", "phone" : "+1 (987) 500-2023", "address" : "940 Irving Avenue, Leyner, Kentucky, 4679", "about" : "Ullamco est officia qui aute cupidatat id labore velit eiusmod duis eiusmod minim do. Irure sunt duis culpa laboris ullamco qui. Mollit duis qui id pariatur proident magna laborum duis non aliquip nisi aliqua pariatur aliqua. Nulla adipisicing non nisi et mollit nisi laboris reprehenderit aliquip laborum in. Commodo occaecat ea consequat ullamco adipisicing consequat consectetur occaecat tempor nulla non duis sit. Laboris dolore dolor anim id tempor irure aute qui labore exercitation aute aliqua. Et occaecat eiusmod qui elit.\r\n", "registered" : "2019-05-12T07:08:37 -06:-30", "latitude" : 47.045888, "longitude" : -169.26207, "tags" : [ "nostrud", "voluptate", "sunt", "non", "irure", "Lorem", "eu" ], "friends" : [ { "id" : 0, "name" : "Young Brewer" }, { "id" : 1, "name" : "Betsy May" }, { "id" : 2, "name" : "Cecile Boyer" } ], "greeting" : "Hello, Elisabeth Wise! You have 3 unread messages.", "favoriteFruit" : "banana" }
+{ "_id" : "5f5486f1c58beb0fd2135a02", "index" : 4, "guid" : "e55b1ad1-a7ed-49e0-8183-cb5732165332", "isActive" : true, "balance" : "$2,641.31", "picture" : "http://placehold.it/32x32", "age" : 39, "eyeColor" : "green", "name" : "Louella Horton", "gender" : "female", "company" : "MAKINGWAY", "email" : "louellahorton@makingway.com", "phone" : "+1 (869) 461-3633", "address" : "697 Micieli Place, Hasty, Utah, 5019", "about" : "Esse cupidatat occaecat duis esse sint. Elit officia tempor consectetur amet labore eu amet deserunt amet non laboris veniam consectetur nostrud. Eiusmod cillum irure enim consectetur ullamco tempor aliqua ut. Veniam consequat labore adipisicing laborum. Occaecat fugiat ad id officia consectetur proident commodo exercitation. Adipisicing nisi nostrud sint duis deserunt voluptate fugiat laboris ullamco id ipsum veniam. Est id cillum Lorem minim ullamco voluptate adipisicing occaecat laboris consequat.\r\n", "registered" : "2019-09-10T11:46:28 -06:-30", "latitude" : 35.898214, "longitude" : -35.24077, "tags" : [ "officia", "ex", "minim", "ad", "consectetur", "fugiat", "velit" ], "friends" : [ { "id" : 0, "name" : "Sweet Rosario" }, { "id" : 1, "name" : "Socorro Case" }, { "id" : 2, "name" : "Myrtle Cole" } ], "greeting" : "Hello, Louella Horton! You have 7 unread messages.", "favoriteFruit" : "apple" }
+> db.dummy.aggregate([{$match:{isActive:true}}]).pretty()
+{
+	"_id" : "5f5486f13408709c31f58c02",
+	"index" : 0,
+	"guid" : "e7a05ac2-7968-49e7-9706-3b5642c28d5b",
+	"isActive" : true,
+	"balance" : "$1,729.14",
+	"picture" : "http://placehold.it/32x32",
+	"age" : 37,
+	"eyeColor" : "green",
+	"name" : "Elisabeth Wise",
+	"gender" : "female",
+	"company" : "BICOL",
+	"email" : "elisabethwise@bicol.com",
+	"phone" : "+1 (987) 500-2023",
+	"address" : "940 Irving Avenue, Leyner, Kentucky, 4679",
+	"about" : "Ullamco est officia qui aute cupidatat id labore velit eiusmod duis eiusmod minim do. Irure sunt duis culpa laboris ullamco qui. Mollit duis qui id pariatur proident magna laborum duis non aliquip nisi aliqua pariatur aliqua. Nulla adipisicing non nisi et mollit nisi laboris reprehenderit aliquip laborum in. Commodo occaecat ea consequat ullamco adipisicing consequat consectetur occaecat tempor nulla non duis sit. Laboris dolore dolor anim id tempor irure aute qui labore exercitation aute aliqua. Et occaecat eiusmod qui elit.\r\n",
+	"registered" : "2019-05-12T07:08:37 -06:-30",
+	"latitude" : 47.045888,
+	"longitude" : -169.26207,
+	"tags" : [
+		"nostrud",
+		"voluptate",
+		"sunt",
+		"non",
+		"irure",
+		"Lorem",
+		"eu"
+	],
+	"friends" : [
+		{
+			"id" : 0,
+			"name" : "Young Brewer"
+		},
+		{
+			"id" : 1,
+			"name" : "Betsy May"
+		},
+		{
+			"id" : 2,
+			"name" : "Cecile Boyer"
+		}
+	],
+	"greeting" : "Hello, Elisabeth Wise! You have 3 unread messages.",
+	"favoriteFruit" : "banana"
+}
+{
+	"_id" : "5f5486f1c58beb0fd2135a02",
+	"index" : 4,
+	"guid" : "e55b1ad1-a7ed-49e0-8183-cb5732165332",
+	"isActive" : true,
+	"balance" : "$2,641.31",
+	"picture" : "http://placehold.it/32x32",
+	"age" : 39,
+	"eyeColor" : "green",
+	"name" : "Louella Horton",
+	"gender" : "female",
+	"company" : "MAKINGWAY",
+	"email" : "louellahorton@makingway.com",
+	"phone" : "+1 (869) 461-3633",
+	"address" : "697 Micieli Place, Hasty, Utah, 5019",
+	"about" : "Esse cupidatat occaecat duis esse sint. Elit officia tempor consectetur amet labore eu amet deserunt amet non laboris veniam consectetur nostrud. Eiusmod cillum irure enim consectetur ullamco tempor aliqua ut. Veniam consequat labore adipisicing laborum. Occaecat fugiat ad id officia consectetur proident commodo exercitation. Adipisicing nisi nostrud sint duis deserunt voluptate fugiat laboris ullamco id ipsum veniam. Est id cillum Lorem minim ullamco voluptate adipisicing occaecat laboris consequat.\r\n",
+	"registered" : "2019-09-10T11:46:28 -06:-30",
+	"latitude" : 35.898214,
+	"longitude" : -35.24077,
+	"tags" : [
+		"officia",
+		"ex",
+		"minim",
+		"ad",
+		"consectetur",
+		"fugiat",
+		"velit"
+	],
+	"friends" : [
+		{
+			"id" : 0,
+			"name" : "Sweet Rosario"
+		},
+		{
+			"id" : 1,
+			"name" : "Socorro Case"
+		},
+		{
+			"id" : 2,
+			"name" : "Myrtle Cole"
+		}
+	],
+	"greeting" : "Hello, Louella Horton! You have 7 unread messages.",
+	"favoriteFruit" : "apple"
+}
+
+$match Stage with Size operator
+> db.dummy.aggregate([{$match:{friends:{$size:3}}}]).pretty()
+{
+	"_id" : "5f5486f1ff7abf454ad3171a",
+	"index" : 1,
+	"guid" : "20e6090e-a6f5-4f68-8deb-b6881375d7bb",
+	"isActive" : false,
+	"balance" : "$2,463.32",
+	"picture" : "http://placehold.it/32x32",
+	"age" : 32,
+	"eyeColor" : "green",
+	"name" : "Tonya Sanchez",
+	"gender" : "female",
+	"company" : "ZOLAVO",
+	"email" : "tonyasanchez@zolavo.com",
+	"phone" : "+1 (814) 568-3906",
+	"address" : "902 Coffey Street, Jacksonburg, Illinois, 6781",
+	"about" : "Et do deserunt proident ex officia cupidatat ea Lorem et duis. Commodo officia cillum ipsum exercitation aute ad ullamco eiusmod. Culpa sint irure laborum reprehenderit exercitation nostrud occaecat.\r\n",
+	"registered" : "2015-11-13T07:15:54 -06:-30",
+	"latitude" : -4.216499,
+	"longitude" : 77.822874,
+	"tags" : [
+		"eiusmod",
+		"eiusmod",
+		"laboris",
+		"irure",
+		"aute",
+		"aliquip",
+		"aliqua"
+	],
+	"friends" : [
+		{
+			"id" : 0,
+			"name" : "Robbie Hooper"
+		},
+		{
+			"id" : 1,
+			"name" : "Angela Barry"
+		},
+		{
+			"id" : 2,
+			"name" : "Rojas Floyd"
+		}
+	],
+	"greeting" : "Hello, Tonya Sanchez! You have 6 unread messages.",
+	"favoriteFruit" : "banana"
+}
+{
+	"_id" : "5f5486f13408709c31f58c02",
+	"index" : 0,
+	"guid" : "e7a05ac2-7968-49e7-9706-3b5642c28d5b",
+	"isActive" : true,
+	"balance" : "$1,729.14",
+	"picture" : "http://placehold.it/32x32",
+	"age" : 37,
+	"eyeColor" : "green",
+	"name" : "Elisabeth Wise",
+	"gender" : "female",
+	"company" : "BICOL",
+	"email" : "elisabethwise@bicol.com",
+	"phone" : "+1 (987) 500-2023",
+	"address" : "940 Irving Avenue, Leyner, Kentucky, 4679",
+	"about" : "Ullamco est officia qui aute cupidatat id labore velit eiusmod duis eiusmod minim do. Irure sunt duis culpa laboris ullamco qui. Mollit duis qui id pariatur proident magna laborum duis non aliquip nisi aliqua pariatur aliqua. Nulla adipisicing non nisi et mollit nisi laboris reprehenderit aliquip laborum in. Commodo occaecat ea consequat ullamco adipisicing consequat consectetur occaecat tempor nulla non duis sit. Laboris dolore dolor anim id tempor irure aute qui labore exercitation aute aliqua. Et occaecat eiusmod qui elit.\r\n",
+	"registered" : "2019-05-12T07:08:37 -06:-30",
+	"latitude" : 47.045888,
+	"longitude" : -169.26207,
+	"tags" : [
+		"nostrud",
+		"voluptate",
+		"sunt",
+		"non",
+		"irure",
+		"Lorem",
+		"eu"
+	],
+	"friends" : [
+		{
+			"id" : 0,
+			"name" : "Young Brewer"
+		},
+		{
+			"id" : 1,
+			"name" : "Betsy May"
+		},
+		{
+			"id" : 2,
+			"name" : "Cecile Boyer"
+		}
+	],
+	"greeting" : "Hello, Elisabeth Wise! You have 3 unread messages.",
+	"favoriteFruit" : "banana"
+}
+
+- $match and $group stages Together
+> db.dummy.aggregate([{$match:{gender:"female"}},{$group:{_id:{eyeColor:"$eyeColor",favoriteFruit:"$favoriteFruit",age:"$age"}}}])
+{ "_id" : { "eyeColor" : "green", "favoriteFruit" : "apple", "age" : 39 } }
+{ "_id" : { "eyeColor" : "blue", "favoriteFruit" : "apple", "age" : 40 } }
+{ "_id" : { "eyeColor" : "green", "favoriteFruit" : "banana", "age" : 32 } }
+{ "_id" : { "eyeColor" : "brown", "favoriteFruit" : "banana", "age" : 39 } }
+{ "_id" : { "eyeColor" : "green", "favoriteFruit" : "banana", "age" : 37 } }
+{ "_id" : { "eyeColor" : "brown", "favoriteFruit" : "strawberry", "age" : 32 } }
+
+
+- $match and $count stage together
+> db.dummy.aggregate([{$group:{_id:{age:"$age"}}},{$count:"age"}])
+{ "age" : 4 }
+> db.docs.aggregate([{$group:{_id:{age:"$age"}}},{$count:"age"}])
+{ "age" : 1 }
+> db.docs.aggregate([{$group:{_id:{first_name:"$First_name"}}},{$count:"age"}])
+{ "age" : 1 }
+> db.docs.aggregate([{$group:{_id:{first_name:"$First_name"}}},{$count:"First_name"}])
+{ "First_name" : 1 }
+ db.docs.aggregate([{$group:{_id:{first_name:"$first_name"}}},{$count:"First_name"}])
+{ "First_name" : 940 }
+> db.docs.aggregate([{$group:{_id:{first_name:"$first_name"}}},{$count:"first_name"}])
+{ "first_name" : 940 }
+
+- $Sort stage 
+> db.docs.aggregate([{$sort:{name:1}}])
+{ "_id" : ObjectId("5f547d65e01390d3d881e349"), "first_name" : "Thor", "last_name" : "Gayther", "email" : "tgayther7@domainmarket.com", "gender" : "Male", "salary" : "$24.34" }
+{ "_id" : ObjectId("5f547d65e01390d3d881e34a"), "first_name" : "Brina", "last_name" : "Pendock", "email" : "bpendock3@jiathis.com", "gender" : "Female", "salary" : "$88.39" }
+{ "_id" : ObjectId("5f547d65e01390d3d881e34b"), "first_name" : "Gram", "last_name" : "Regus", "email" : "gregus8@wordpress.com", "gender" : "Male", "salary" : "$47.70" }
+{ "_id" : ObjectId("5f547d65e01390d3d881e34c"), "first_name" : "Yurik", "last_name" : "Sumnall", "email" : "ysumnall9@wikimedia.org", "gender" : "Male", "salary" : "$79.57" }
+{ "_id" : ObjectId("5f547d65e01390d3d881e34d"), "first_name" : "Inez", "last_name" : "von Nassau", "email" : "ivonnassaua@unicef.org", "gender" : "Female", "salary" : "$6.12" }
+{ "_id" : ObjectId("5f547d65e01390d3d881e34e"), "first_name" : "Billi", "last_name" : "Lounds", "email" : "bloundsb@360.cn", "gender" : "Female", "salary" : "$22.45" }
+{ "_id" : ObjectId("5f547d65e01390d3d881e34f"), "first_name" : "Rollo", "last_name" : "Salan", "email" : "rsalanc@vimeo.com", "gender" : "Male", "salary" : "$13.10" }
+{ "_id" : ObjectId("5f547d65e01390d3d881e350"), "first_name" : "Germain", "last_name" : "Seabourne", "email" : "gseabourned@icio.us", "gender" : "Male", "salary" : "$73.53" }
+{ "_id" : ObjectId("5f547d65e01390d3d881e351"), "first_name" : "Rosaline", "last_name" : "Champneys", "email" : "rchampneyse@deviantart.com", "gender" : "Female", "salary" : "$49.73" }
+{ "_id" : ObjectId("5f547d65e01390d3d881e352"), "first_name" : "Hewet", "last_name" : "Fessby", "email" : "hfessbyf@symantec.com", "gender" : "Male", "salary" : "$41.58" }
+{ "_id" : ObjectId("5f547d65e01390d3d881e353"), "first_name" : "Ewart", "last_name" : "Onge", "email" : "eongeg@columbia.edu", "gender" : "Male", "salary" : "$71.94" }
+{ "_id" : ObjectId("5f547d65e01390d3d881e354"), "first_name" : "Fritz", "last_name" : "Ollerenshaw", "email" : "follerenshaw0@netscape.com", "gender" : "Male", "salary" : "$2.03" }
+{ "_id" : ObjectId("5f547d65e01390d3d881e355"), "first_name" : "Mar", "last_name" : "Mizen", "email" : "mmizen5@hexun.com", "gender" : "Male", "salary" : "$20.54" }
+{ "_id" : ObjectId("5f547d65e01390d3d881e356"), "first_name" : "Marilin", "last_name" : "Greenham", "email" : "mgreenhamk@multiply.com", "gender" : "Female", "salary" : "$18.65" }
+{ "_id" : ObjectId("5f547d65e01390d3d881e357"), "first_name" : "Chiarra", "last_name" : "Dorricott", "email" : "cdorricottj@zimbio.com", "gender" : "Female", "salary" : "$94.64" }
+{ "_id" : ObjectId("5f547d65e01390d3d881e358"), "first_name" : "Roshelle", "last_name" : "Kindred", "email" : "rkindredi@exblog.jp", "gender" : "Female", "salary" : "$15.33" }
+{ "_id" : ObjectId("5f547d65e01390d3d881e359"), "first_name" : "Kristi", "last_name" : "Adkin", "email" : "kadkinl@nationalgeographic.com", "gender" : "Female", "salary" : "$82.84" }
+{ "_id" : ObjectId("5f547d65e01390d3d881e35a"), "first_name" : "Steffen", "last_name" : "Sheldrake", "email" : "ssheldraken@webs.com", "gender" : "Male", "salary" : "$92.03" }
+{ "_id" : ObjectId("5f547d65e01390d3d881e35b"), "first_name" : "Sherwynd", "last_name" : "Juschka", "email" : "sjuschkam@vkontakte.ru", "gender" : "Male", "salary" : "$25.97" }
+{ "_id" : ObjectId("5f547d65e01390d3d881e35c"), "first_name" : "Brockie", "last_name" : "Lamlin", "email" : "blamlino@cbsnews.com", "gender" : "Male", "salary" : "$8.32" }
+Type "it" for more
+
+-$group and $sort stages Together
+> db.docs.aggregate([{$group:{_id:{age:"$age"}}},{$sort:{salary:1}}]).pretty()
+{ "_id" : { "age" : null } }
+> db.dummy.aggregate([{$group:{_id:{age:"$age"}}},{$sort:{salary:1}}]).pretty()
+{ "_id" : { "age" : 40 } }
+{ "_id" : { "age" : 39 } }
+{ "_id" : { "age" : 37 } }
+{ "_id" : { "age" : 32 } }
+> db.dummy.aggregate([{$group:{_id:{age:"$age"}}},{$sort:{age:1}}]).pretty()
+{ "_id" : { "age" : 40 } }
+{ "_id" : { "age" : 39 } }
+{ "_id" : { "age" : 37 } }
+{ "_id" : { "age" : 32 } }
+> db.dummy.aggregate([{$group:{_id:{age:"$age",salary:"$salary"}}},{$sort:{age:1}}]).pretty()
+{ "_id" : { "age" : 40 } }
+{ "_id" : { "age" : 37 } }
+{ "_id" : { "age" : 39 } }
+{ "_id" : { "age" : 32 } }
+> db.dummy.aggregate([{$group:{_id:{age:"$age",salary:"$salary"}}},{$sort:{"_id.age":1}}]).pretty()
+{ "_id" : { "age" : 32 } }
+{ "_id" : { "age" : 37 } }
+{ "_id" : { "age" : 39 } }
+{ "_id" : { "age" : 40 } }
+
