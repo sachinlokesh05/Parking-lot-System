@@ -429,19 +429,6 @@ The sort() Method
 { "_id" : ObjectId("5f4650edb6cb26b0f747547d"), "First_Name" : "Radhika" }
 > db.empDetails.find({},{"First_Name":1}).pretty().sort({First_Name:1})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 MongoDB - Indexing
 
 The createIndex() Method
